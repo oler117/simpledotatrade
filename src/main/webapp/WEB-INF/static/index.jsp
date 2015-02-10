@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>Oler117 Simple Dota2 Trader</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
@@ -41,11 +41,16 @@
     </div>
     <div class="form-group">
         <div class="col-xs-offset-2 col-xs-10">
-            <button id="get-trade-analysis-btn" class="btn btn-primary">Find out</button>
+            <input type="button" id="get-trade-analysis-btn" class="btn btn-primary" value="Find out"></button>
         </div>
     </div>
 </form>
 
+<div id="traderinfo"></div>
+<br/>
+
+<div id="tradeitemsinfo"></div>
+<br/>
 
 </body>
 </html>
