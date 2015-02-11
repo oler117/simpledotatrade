@@ -5,8 +5,12 @@
       return $.ajax('trade/' + $('#tradeid').val(), {
         type: 'GET',
         success: function(res, status, xhr) {
-            $('#traderinfo').html(res.trader);
-            $('#tradeitemsinfo').html(res.tradeOfferInfo);
+            var parsedTrader = JSON.parse(res).trader;
+            var parsedOfferInfo = JSON.parse(res).tradeOffer;
+            $('.traderinfo #trader-steam-name').html(parsedTrader.steamName);
+            $('.traderinfo #trader-steam-url').html(parsedTrader.steamURL);
+            $('.traderinfo #trader-steam-ava').html(parsedTrader.avatarURL);
+            $('#tradeitemsinfo').html('Revenue = ' + parsedOfferInfo.summDifference + ' $');
             alert("Success!");
           return 0;
         },

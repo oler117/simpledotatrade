@@ -46,7 +46,15 @@
     </div>
 </form>
 
-<div id="traderinfo"></div>
+Trader Info:
+<div class="traderinfo">
+    Steam name:
+    <div id="trader-steam-name"></div>
+    Profile URL:
+    <div id="trader-steam-url"></div>
+    Avatar:
+    <div id="trader-steam-ava"></div>
+</div>
 <br/>
 
 <div id="tradeitemsinfo"></div>
