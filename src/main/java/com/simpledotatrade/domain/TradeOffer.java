@@ -1,4 +1,4 @@
-package com.testproject.domain;
+package com.simpledotatrade.domain;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;

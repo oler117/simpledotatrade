@@ -60,5 +60,16 @@ Trader Info:
 <div id="tradeitemsinfo"></div>
 <br/>
 
+<div class="container">
+    <div class="row">
+        <strong>Offer:</strong>
+
+        <div id="tradeitems-offer" class="col-md-4"></div>
+        <strong>Wants:</strong>
+
+        <div id="tradeitems-wants" class="col-md-8"></div>
+    </div>
+</div>
+
 </body>
 </html>

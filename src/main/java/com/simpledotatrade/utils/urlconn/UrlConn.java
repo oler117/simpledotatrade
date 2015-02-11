@@ -1,4 +1,4 @@
-package com.testproject.utils.urlconn;
+package com.simpledotatrade.utils.urlconn;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

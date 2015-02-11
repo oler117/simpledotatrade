@@ -1,7 +1,7 @@
-package com.testproject.domain.wrappers;
+package com.simpledotatrade.domain.wrappers;
 
-import com.testproject.domain.TradeOffer;
-import com.testproject.domain.Trader;
+import com.simpledotatrade.domain.TradeOffer;
+import com.simpledotatrade.domain.Trader;
 
 /**
  * Created by oler on 11.02.2015.

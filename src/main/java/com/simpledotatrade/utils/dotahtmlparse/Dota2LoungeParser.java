@@ -1,8 +1,8 @@
-package com.testproject.utils.dotahtmlparse;
+package com.simpledotatrade.utils.dotahtmlparse;
 
-import com.testproject.domain.TradeItem;
-import com.testproject.domain.TradeOffer;
-import com.testproject.domain.Trader;
+import com.simpledotatrade.domain.TradeItem;
+import com.simpledotatrade.domain.TradeOffer;
+import com.simpledotatrade.domain.Trader;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

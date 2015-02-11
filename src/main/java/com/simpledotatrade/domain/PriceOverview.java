@@ -1,4 +1,4 @@
-package com.testproject.domain;
+package com.simpledotatrade.domain;
 
 /**
  * Created by oles on 11.02.15.

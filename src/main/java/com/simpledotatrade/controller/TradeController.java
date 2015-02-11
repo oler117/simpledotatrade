@@ -1,13 +1,13 @@
-package com.testproject.controller;
+package com.simpledotatrade.controller;
 
 import com.google.gson.Gson;
-import com.testproject.domain.PriceOverview;
-import com.testproject.domain.TradeItem;
-import com.testproject.domain.TradeOffer;
-import com.testproject.domain.Trader;
-import com.testproject.domain.wrappers.Wrapper;
-import com.testproject.utils.dotahtmlparse.Dota2LoungeParser;
-import com.testproject.utils.urlconn.UrlConn;
+import com.simpledotatrade.domain.PriceOverview;
+import com.simpledotatrade.domain.TradeItem;
+import com.simpledotatrade.domain.TradeOffer;
+import com.simpledotatrade.domain.Trader;
+import com.simpledotatrade.domain.wrappers.Wrapper;
+import com.simpledotatrade.utils.dotahtmlparse.Dota2LoungeParser;
+import com.simpledotatrade.utils.urlconn.UrlConn;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

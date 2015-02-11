@@ -10,7 +10,22 @@
             $('.traderinfo #trader-steam-name').html(parsedTrader.steamName);
             $('.traderinfo #trader-steam-url').html(parsedTrader.steamURL);
             $('.traderinfo #trader-steam-ava').html(parsedTrader.avatarURL);
+
             $('#tradeitemsinfo').html('Revenue = ' + parsedOfferInfo.summDifference + ' $');
+
+            var table = $('<table/>').appendTo($('#tradeitems-offer'));
+            $(parsedOfferInfo.offering).each(function (i, tradeitem) {
+                $('<tr/>').appendTo(table)
+                    .append($('<td/>').text(tradeitem.name))
+                    .append($('<td/>').text(tradeitem.price));
+            });
+
+            table = $('<table/>').appendTo($('#tradeitems-wants'));
+            $(parsedOfferInfo.wants).each(function (i, tradeitem) {
+                $('<tr/>').appendTo(table)
+                    .append($('<td/>').text(tradeitem.name))
+                    .append($('<td/>').text(tradeitem.price));
+            });
             alert("Success!");
           return 0;
         },

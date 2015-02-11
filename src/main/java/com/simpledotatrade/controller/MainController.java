@@ -1,4 +1,4 @@
-package com.testproject.controller;
+package com.simpledotatrade.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
