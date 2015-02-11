@@ -32,54 +32,99 @@
 
 <div class="container">
     <div class="page-header">
-        <h1>Sticky footer</h1>
+        <div class="container">
+            <div class="row">
+                <%--TODO: download image and save it locally! --%>
+                <img class="col-md-2" src="http://31.media.tumblr.com/avatar_43d6266dc7fc_64.png"/>
+
+                <h1>Simple Dota2 Trader by oler117</h1>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="container">
-    <form class="form-horizontal">
-        <div class="form-group">
-            <label for="tradeid" class="control-label col-xs-2">Trade Id</label>
+    <div class="row">
+        <div class="col-md-8">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="tradeid" class="control-label col-xs-3">Trade Id</label>
 
-            <div class="col-xs-4">
-                <input type="text" id="tradeid" class="form-control" placeholder="Trade ID" required autofocus>
-            </div>
+                    <div class="col-xs-9">
+                        <input type="text" id="tradeid" class="form-control" placeholder="Trade ID" required autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-3 col-xs-8">
+                        <input type="button" id="get-trade-analysis-btn" class="btn btn-primary"
+                               value="Find out"></button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <div class="col-xs-offset-2 col-xs-10">
-                <input type="button" id="get-trade-analysis-btn" class="btn btn-primary" value="Find out"></button>
-            </div>
+        <div class="col-md-4">
+            <input type="button" id="find-profitable-btn" class="btn btn-primary" value="Find preferable"></button>
         </div>
-    </form>
+    </div>
 </div>
+
+<br/><br/>
 
 <div class="container">
     Trader Info:
     <div class="traderinfo">
-        Steam name:
-        <div id="trader-steam-name"></div>
-        Profile URL:
-        <div id="trader-steam-url"></div>
-        Avatar:
-        <div id="trader-steam-ava"></div>
+        <div class="row">
+            <label for="trader-steam-name" class="control-label col-md-3">Steam name:</label>
+
+            <div id="trader-steam-name" class="col-md-9"></div>
+        </div>
+
+        <div class="row">
+            <label for="trader-steam-url" class="control-label col-md-3">Profile URL:</label>
+
+            <div id="trader-steam-url" class="col-md-9"></div>
+        </div>
+
+        <div class="row">
+            <label for="trader-steam-ava" class="control-label col-md-3">Avatar:</label>
+
+            <div id="trader-steam-ava" class="col-md-9"></div>
+        </div>
     </div>
     <br/>
 </div>
 
 <div class="container">
-    <div id="tradeitemsinfo"></div>
+    <div id="tradeitemsinfo">
+        <h3>
+            Revenue = <span></span>
+        </h3>
+    </div>
 </div>
+
+<%--<div class="container">--%>
+<%--<div class="row">--%>
+<%--<strong>Offer:</strong>--%>
+<%--<div id="tradeitems-offer" class="col-md-4"></div>--%>
+
+<%--<strong>Wants:</strong>--%>
+<%--<div id="tradeitems-wants" class="col-md-8"></div>--%>
+<%--</div>--%>
+<%--</div>--%>
 
 <div class="container">
     <div class="row">
-        <strong>Offer:</strong>
-
-        <div id="tradeitems-offer" class="col-md-4"></div>
-        <strong>Wants:</strong>
-
-        <div id="tradeitems-wants" class="col-md-8"></div>
+        <div class="col-md-6"><strong>Offer:</strong></div>
+        <div class="col-md-6"><strong>Wants:</strong></div>
     </div>
 </div>
+<div class="container">
+    <div class="row">
+        <div id="tradeitems-offer" class="col-md-6"></div>
+        <div id="tradeitems-wants" class="col-md-6"></div>
+    </div>
+</div>
+
 
 <footer class="footer">
     <div class="container">

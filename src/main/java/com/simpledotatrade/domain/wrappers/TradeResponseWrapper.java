@@ -6,15 +6,15 @@ import com.simpledotatrade.domain.Trader;
 /**
  * Created by oler on 11.02.2015.
  */
-public class Wrapper {
+public class TradeResponseWrapper {
 
     private Trader trader;
     private TradeOffer tradeOffer;
 
-    public Wrapper() {
+    public TradeResponseWrapper() {
     }
 
-    public Wrapper(Trader trader, TradeOffer tradeOffer) {
+    public TradeResponseWrapper(Trader trader, TradeOffer tradeOffer) {
         this.trader = trader;
         this.tradeOffer = tradeOffer;
     }

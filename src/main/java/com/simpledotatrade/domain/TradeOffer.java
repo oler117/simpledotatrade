@@ -19,6 +19,12 @@ public class TradeOffer {
         wants = new LinkedList<TradeItem>();
     }
 
+    public TradeOffer(List<TradeItem> offering, List<TradeItem> wants, BigDecimal summDifference) {
+        this.offering = new LinkedList<TradeItem>(offering);
+        this.wants = new LinkedList<TradeItem>(wants);
+        this.summDifference = summDifference;
+    }
+
     public List<TradeItem> getOffering() {
         return offering;
     }

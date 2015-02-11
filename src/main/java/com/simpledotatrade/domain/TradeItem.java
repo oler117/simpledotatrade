@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 public class TradeItem {
 
     private String name;
-    private BigDecimal price;
+    private BigDecimal lowestPrice;
+    private BigDecimal mediumPrice;
 
     public TradeItem() {
     }
@@ -17,9 +18,10 @@ public class TradeItem {
         this.name = name;
     }
 
-    public TradeItem(String name, BigDecimal price) {
+    public TradeItem(String name, BigDecimal lowestPrice, BigDecimal mediumPrice) {
         this.name = name;
-        this.price = price;
+        this.lowestPrice = lowestPrice;
+        this.mediumPrice = mediumPrice;
     }
 
     public String getName() {
@@ -30,19 +32,28 @@ public class TradeItem {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getLowestPrice() {
+        return lowestPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setLowestPrice(BigDecimal lowestPrice) {
+        this.lowestPrice = lowestPrice;
+    }
+
+    public BigDecimal getMediumPrice() {
+        return mediumPrice;
+    }
+
+    public void setMediumPrice(BigDecimal mediumPrice) {
+        this.mediumPrice = mediumPrice;
     }
 
     @Override
     public String toString() {
         return "TradeItem{" +
                 "name='" + name + '\'' +
-                ", price=" + price +
+                ", lowestPrice=" + lowestPrice +
+                ", mediumPrice=" + mediumPrice +
                 '}';
     }
 }

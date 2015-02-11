@@ -9,63 +9,90 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by oler on 10.02.2015.
  */
 public class Dota2LoungeParser {
-
-    private String URL;
+    //TODO: replace hardcode into constants!
     private Document doc;
 
-    public Dota2LoungeParser(String URL) {
-        this.URL = URL;
-        init();
+    public Dota2LoungeParser() {
     }
 
-    private void init() {
+    private void init(String pageOrURL, boolean isURL) {
         try {
-            doc = Jsoup.connect(URL).get();
+            if (isURL) {
+                doc = Jsoup.connect(pageOrURL).get();
+            } else {
+                doc = Jsoup.parse(pageOrURL);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Trader getTrader() {
+    public Trader parseTrader(String pageOrURL, boolean isURL) {
+        init(pageOrURL, isURL);
 
         Trader trader = new Trader();
 
         Elements tempElement;
 
         tempElement = doc.select(".profilesmallheader span b");
-        trader.setSteamName(tempElement.text());
+        trader.setSteamName(tempElement.text().trim());
 
         tempElement = doc.select(".profilesmall");
-        trader.setSteamURL(tempElement.attr("href"));
+        trader.setSteamURL(tempElement.attr("href").trim());
 
         tempElement = doc.select(".profilesmall img");
-        trader.setAvatarURL(tempElement.attr("src"));
+        trader.setAvatarURL(tempElement.attr("src").trim());
 
         return trader;
     }
 
-    public TradeOffer getTradeOfferInfo() {
+    public TradeOffer parseTradeOffer(String pageOrTradeURL, boolean isURL) {
+        init(pageOrTradeURL, isURL);
+
+        Elements tradePollPart = doc.select(".tradepoll");
+        return getTradeOfferFromTradepollCssClass(tradePollPart);
+    }
+
+    public List<TradeOffer> parseTradeOfferPage(String pageOrTradePageURL, boolean isURL) {
+        init(pageOrTradePageURL, isURL);
+
+        List<TradeOffer> tradeOffers = new LinkedList<>();
+
+        Elements tradePollPart = doc.select(".tradepoll");
+        for (Element element : tradePollPart) {
+            TradeOffer tradeOffer = getTradeOfferFromTradepollCssClass(new Elements(element));
+            tradeOffers.add(tradeOffer);
+        }
+
+        return tradeOffers;
+    }
+
+    private static TradeOffer getTradeOfferFromTradepollCssClass(Elements documentPart) {
 
         TradeOffer tradeOffer = new TradeOffer();
 
         Elements tempElement;
 
-        tempElement = doc.select("#tradediv .tradepoll .tradecnt .left .oitm");
+        tempElement = documentPart.select(".tradecnt .left .oitm");
         for (Element item : tempElement) {
-            tradeOffer.getOffering().add(
-                    new TradeItem(item.select(".name b").text()));
+
+            String name = item.select(".name b").text().trim();
+            tradeOffer.getOffering().add(new TradeItem(name));
         }
 
 
-        tempElement = doc.select("#tradediv .tradepoll .tradecnt .right .oitm");
+        tempElement = documentPart.select(".tradecnt .right .oitm");
         for (Element item : tempElement) {
-            tradeOffer.getWants().add(
-                    new TradeItem(item.select(".name b").text()));
+
+            String name = item.select(".name b").text().trim();
+            tradeOffer.getWants().add(new TradeItem(name));
         }
 
         return tradeOffer;

@@ -1,14 +1,40 @@
 $(document).ready ->
-  $("#get-trade-analysis-btn").click ->
+  $('#get-trade-analysis-btn').click ->
     $.ajax 'trade/' + $('#tradeid').val(),
-      type: 'GET',
+      type: 'GET'
       success: (res, status, xhr) ->
-        $('#traderinfo').html res.trader
-        $('#tradeitemsinfo').html res.tradeOfferInfo
-        alert "Success!"
+        parsedTrader = JSON.parse(res).trader
+        parsedOfferInfo = JSON.parse(res).tradeOffer
+        $('.traderinfo #trader-steam-name').html parsedTrader.steamName
+        $('.traderinfo #trader-steam-url').html parsedTrader.steamURL
+        $('.traderinfo #trader-steam-ava').html parsedTrader.avatarURL
+        revenue = parsedOfferInfo.summDifference
+        $('#tradeitemsinfo span').html revenue + ' $'
+        if revenue < 0
+          $('#tradeitemsinfo span').addClass 'text-danger'
+        else
+          $('#tradeitemsinfo span').addClass 'text-success'
+        table = $('<table/>').appendTo($('#tradeitems-offer'))
+        $(parsedOfferInfo.offering).each (i, tradeitem) ->
+          $('<tr/>').appendTo(table).append($('<td/>').text(tradeitem.name)).append $('<td/>').text(tradeitem.lowestPrice)
+          return
+        table = $('<table/>').appendTo($('#tradeitems-wants'))
+        $(parsedOfferInfo.wants).each (i, tradeitem) ->
+          $('<tr/>').appendTo(table).append($('<td/>').text(tradeitem.name)).append $('<td/>').text(tradeitem.lowestPrice)
+          return
+        alert 'Success!'
         0
       error: (res, status, xhr) ->
-        alert "Error!"
+        alert 'Error!'
+        0
+  $('#find-profitable-btn').click ->
+    $.ajax 'trade/profitable',
+      type: 'GET'
+      success: (res, status, xhr) ->
+        alert 'Success!'
+        0
+      error: (res, status, xhr) ->
+        alert 'Error!'
         0
 
 ###
