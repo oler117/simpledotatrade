@@ -30,35 +30,45 @@
 
 <body>
 
-
-<form class="form-horizontal">
-    <div class="form-group">
-        <label for="tradeid" class="control-label col-xs-2">Trade Id</label>
-
-        <div class="col-xs-4">
-            <input type="text" id="tradeid" class="form-control" placeholder="Trade ID" required autofocus>
-        </div>
+<div class="container">
+    <div class="page-header">
+        <h1>Sticky footer</h1>
     </div>
-    <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-10">
-            <input type="button" id="get-trade-analysis-btn" class="btn btn-primary" value="Find out"></button>
-        </div>
-    </div>
-</form>
-
-Trader Info:
-<div class="traderinfo">
-    Steam name:
-    <div id="trader-steam-name"></div>
-    Profile URL:
-    <div id="trader-steam-url"></div>
-    Avatar:
-    <div id="trader-steam-ava"></div>
 </div>
-<br/>
 
-<div id="tradeitemsinfo"></div>
-<br/>
+<div class="container">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="tradeid" class="control-label col-xs-2">Trade Id</label>
+
+            <div class="col-xs-4">
+                <input type="text" id="tradeid" class="form-control" placeholder="Trade ID" required autofocus>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <input type="button" id="get-trade-analysis-btn" class="btn btn-primary" value="Find out"></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container">
+    Trader Info:
+    <div class="traderinfo">
+        Steam name:
+        <div id="trader-steam-name"></div>
+        Profile URL:
+        <div id="trader-steam-url"></div>
+        Avatar:
+        <div id="trader-steam-ava"></div>
+    </div>
+    <br/>
+</div>
+
+<div class="container">
+    <div id="tradeitemsinfo"></div>
+</div>
 
 <div class="container">
     <div class="row">
@@ -71,5 +81,10 @@ Trader Info:
     </div>
 </div>
 
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">&copy; oler117, All rights reserved - 2015</p>
+    </div>
+</footer>
 </body>
 </html>
