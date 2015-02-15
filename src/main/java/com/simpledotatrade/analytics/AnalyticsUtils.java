@@ -8,6 +8,7 @@ import com.simpledotatrade.utils.urlconn.UrlConn;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,84 +46,139 @@ public class AnalyticsUtils {
 
     public static TradeOffer fillInTradeOfferPrices(final TradeOffer offer) {
 
-        TradeOffer tradeOffer = new TradeOffer(
+        TradeOffer tradeOffer = new TradeOffer(offer.getId(),
                 offer.getOffering(), offer.getWants(), offer.getSummDifference());
 
-        for (TradeItem tradeItem : tradeOffer.getOffering()) {
+        boolean isTradeAcceptable;
+        isTradeAcceptable = fillInTradeItemsListWithPrices(tradeOffer.getOffering());
+        if (!isTradeAcceptable) {
+            return null;
+        }
+        isTradeAcceptable = fillInTradeItemsListWithPrices(tradeOffer.getWants());
+        if (!isTradeAcceptable) {
+            return null;
+        }
+
+
+        BigDecimal summDifference;
+        BigDecimal offerItemsCost = calculateTradeItemsCost(tradeOffer.getOffering());
+        BigDecimal wantsItemsCost = calculateTradeItemsCost(tradeOffer.getWants());
+        summDifference = offerItemsCost.subtract(wantsItemsCost);
+
+        tradeOffer.setSummDifference(summDifference);
+        LOG.info("REVENUE = " + tradeOffer.getSummDifference());
+
+        return tradeOffer;
+    }
+
+    private static BigDecimal calculateTradeItemsCost(List<TradeItem> tradeItems) {
+
+        BigDecimal itemsCost = BigDecimal.ZERO;
+        for (TradeItem tradeItem : tradeItems) {
+
+            /*
+             * If actual lowest price was null, then it would be set to medium price.
+             */
+            itemsCost = itemsCost.add(tradeItem.getLowestPrice());
+        }
+
+        return itemsCost;
+    }
+
+    private static boolean fillInTradeItemsListWithPrices(List<TradeItem> tradeItems) {
+
+        for (TradeItem tradeItem : tradeItems) {
 
             String name = tradeItem.getName();
-            BigDecimal lowestPrice = BigDecimal.ZERO;
-            BigDecimal mediumPrice = BigDecimal.ZERO;
+            BigDecimal lowestPrice = null;
+            BigDecimal mediumPrice = null;
 
             if (!otherItems.contains(name)) {
                 //TODO: add exception handling. Exception occures when there is no such item on steam market!
-                String jsonPriceOverview = UrlConn.callURL(
-                        STEAM_PRICEOVERVIEW_URL + name.replaceAll("\\s", "%20"));
-                jsonPriceOverview = jsonPriceOverview.replace(DOLLAR_SIGN_CODE, "$");
-                //TODO: add replace ',' with '' in volume field
+                String jsonPriceOverview = null;
+                try {
+                    jsonPriceOverview = UrlConn.callURL(
+                            STEAM_PRICEOVERVIEW_URL + name.replaceAll("\\s", "%20"));
+                } catch (IOException e) {
+                    LOG.error("UrlConn.callURL ERROR!");
+                    e.printStackTrace();
+                    return false;
+                }
 
-                LOG.info("Steam Priceoverview[" + name + "]: " + jsonPriceOverview);
+                jsonPriceOverview = preparePriceOverviewJson(jsonPriceOverview);
 
                 PriceOverview po = GSON.fromJson(jsonPriceOverview, PriceOverview.class);
                 LOG.info("Parsed Priceoverview[" + name + "]: " + po.toString());
 
-                lowestPrice = new BigDecimal(
-                        po.getLowest_price().replace("$", "")
-                );
-                mediumPrice = new BigDecimal(
-                        po.getMedian_price().replace("$", "")
-                );
+                if (po.getLowest_price() == null && po.getMedian_price() == null) {
+                    return false;
+                }
+
+                if (po.getLowest_price() != null) {
+
+                    lowestPrice = BigDecimal.valueOf(
+                            Double.parseDouble(po.getLowest_price().replace("$", ""))
+                    );
+                    if (po.getMedian_price() != null) {
+
+                        mediumPrice = BigDecimal.valueOf(
+                                Double.parseDouble(po.getMedian_price().replace("$", ""))
+                        );
+                    } else {
+                        mediumPrice = lowestPrice;
+                    }
+                } else if (po.getMedian_price() != null) {
+
+                    mediumPrice = BigDecimal.valueOf(
+                            Double.parseDouble(po.getMedian_price().replace("$", ""))
+                    );
+                    lowestPrice = mediumPrice;
+                }
+            } else {
+                //Here will be actions that will be done if there are
+                //undefinite items like Any, Real money, Common, Legendary etc.
+
+                //lowestPrice = mediumPrice = BigDecimal.ZERO;
+
+                return false;
             }
 
             tradeItem.setLowestPrice(lowestPrice);
             tradeItem.setMediumPrice(mediumPrice);
         }
 
-        for (TradeItem tradeItem : tradeOffer.getWants()) {
+        return true;
+    }
 
-            String name = tradeItem.getName();
-            BigDecimal lowestPrice = BigDecimal.ZERO;
-            BigDecimal mediumPrice = BigDecimal.ZERO;
+    /**
+     * Is used for preparing priceoverview json, got from steam market
+     * for further converting in TradeItem object.
+     * 1. Replace dollar code with dollar sign
+     * 2. Resolve "," issues in volume field (1,000 -> 1000)
+     *
+     * @param jsonPriceOverview
+     * @return
+     */
+    private static String preparePriceOverviewJson(String jsonPriceOverview) {
 
-            if (!otherItems.contains(name)) {
-                String jsonPriceOverview = UrlConn.callURL(
-                        STEAM_PRICEOVERVIEW_URL + name.replaceAll("\\s", "%20"));
-                jsonPriceOverview = jsonPriceOverview.replace(DOLLAR_SIGN_CODE, "$");
-                //TODO: add replace ',' with '' in volume field
+        jsonPriceOverview = jsonPriceOverview.replace(DOLLAR_SIGN_CODE, "$");
 
-                LOG.info("Steam Priceoverview[" + name + "]: " + jsonPriceOverview);
+        String[] temp = jsonPriceOverview.split(",");
 
-                PriceOverview po = GSON.fromJson(jsonPriceOverview, PriceOverview.class);
-                LOG.info("Parsed Priceoverview[" + name + "]: " + po.toString());
-
-                lowestPrice = new BigDecimal(
-                        po.getLowest_price().replace("$", "")
-                );
-                mediumPrice = new BigDecimal(
-                        po.getMedian_price().replace("$", "")
-                );
+        String newJsonPriceOverview = "";
+        for (int i = 0; i < temp.length; i++) {
+            newJsonPriceOverview = newJsonPriceOverview.concat(temp[i]);
+            if (i == temp.length - 1) {
+                break;
+            } else if (i == 0) {
+                newJsonPriceOverview = newJsonPriceOverview.concat(",");
+            } else if (temp[i + 1].charAt(0) == '"') {
+                newJsonPriceOverview = newJsonPriceOverview.concat(",");
+            } else {
             }
-
-            tradeItem.setLowestPrice(lowestPrice);
-            tradeItem.setMediumPrice(mediumPrice);
         }
 
-        BigDecimal summDifference = null;
-
-        BigDecimal offerItemsCost = BigDecimal.ZERO;
-        for (TradeItem tradeItem : tradeOffer.getOffering()) {
-            offerItemsCost = offerItemsCost.add(tradeItem.getLowestPrice());
-        }
-
-        BigDecimal wantsItemsCost = BigDecimal.ZERO;
-        for (TradeItem tradeItem : tradeOffer.getWants()) {
-            wantsItemsCost = wantsItemsCost.add(tradeItem.getLowestPrice());
-        }
-
-        summDifference = offerItemsCost.subtract(wantsItemsCost);
-        tradeOffer.setSummDifference(summDifference);
-
-        return tradeOffer;
+        return newJsonPriceOverview;
     }
 
 }

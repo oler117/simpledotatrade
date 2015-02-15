@@ -10,6 +10,19 @@ body {
     margin-bottom: 60px; /* Margin bottom by footer height */
 }
 
+table .name-td {
+    width: 70%;
+}
+
+table .price-td {
+    width: 15%;
+}
+
+tr > td {
+    padding-bottom: 0.5em;
+    padding-right: 0.5em;
+}
+
 .footer {
     position: absolute;
     bottom: 0;

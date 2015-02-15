@@ -61,4 +61,28 @@ public class PriceOverview {
                 ", median_price='" + median_price + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PriceOverview)) return false;
+
+        PriceOverview that = (PriceOverview) o;
+
+        if (success != that.success) return false;
+        if (volume != that.volume) return false;
+        if (lowest_price != null ? !lowest_price.equals(that.lowest_price) : that.lowest_price != null) return false;
+        if (median_price != null ? !median_price.equals(that.median_price) : that.median_price != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (success ? 1 : 0);
+        result = 31 * result + (lowest_price != null ? lowest_price.hashCode() : 0);
+        result = 31 * result + volume;
+        result = 31 * result + (median_price != null ? median_price.hashCode() : 0);
+        return result;
+    }
 }

@@ -25,7 +25,37 @@
     <![endif]-->
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+    <%--<link rel="stylesheet" href="/resources/demos/style.css">--%>
+    <script>
+        $(function () {
+            $("#progressbar").progressbar({
+                disabled: true
+            });
+            $("#progressbar").hide();
+            progressbar = $("#progressbar");
+
+            var enableProgressBar = function (event) {
+                progressbar.progressbar("option", "disabled", false);
+                progressbar.progressbar("option", "value", false);
+                $("#progressbar").show();
+            };
+
+            $("#get-trade-analysis-btn").on("click", enableProgressBar);
+            $("#find-profitable-btn").on("click", enableProgressBar);
+        });
+    </script>
+
+    <style>
+        #progressbar .ui-progressbar-value {
+            background-color: #5c5;
+        }
+    </style>
+
     <script type="text/javascript" src="<c:url value="js/mainController.js" />"></script>
+
 </head>
 
 <body>
@@ -63,68 +93,19 @@
             </form>
         </div>
         <div class="col-md-4">
-            <input type="button" id="find-profitable-btn" class="btn btn-primary" value="Find preferable"></button>
+            <input type="button" id="find-profitable-btn" class="btn btn-primary"
+                   value="Find preferable"></button>
+
+        </div>
+        <div class="col-xs-offset-2 col-md-6">
+            <div id="progressbar"></div>
         </div>
     </div>
 </div>
 
 <br/><br/>
 
-<div class="container">
-    Trader Info:
-    <div class="traderinfo">
-        <div class="row">
-            <label for="trader-steam-name" class="control-label col-md-3">Steam name:</label>
-
-            <div id="trader-steam-name" class="col-md-9"></div>
-        </div>
-
-        <div class="row">
-            <label for="trader-steam-url" class="control-label col-md-3">Profile URL:</label>
-
-            <div id="trader-steam-url" class="col-md-9"></div>
-        </div>
-
-        <div class="row">
-            <label for="trader-steam-ava" class="control-label col-md-3">Avatar:</label>
-
-            <div id="trader-steam-ava" class="col-md-9"></div>
-        </div>
-    </div>
-    <br/>
-</div>
-
-<div class="container">
-    <div id="tradeitemsinfo">
-        <h3>
-            Revenue = <span></span>
-        </h3>
-    </div>
-</div>
-
-<%--<div class="container">--%>
-<%--<div class="row">--%>
-<%--<strong>Offer:</strong>--%>
-<%--<div id="tradeitems-offer" class="col-md-4"></div>--%>
-
-<%--<strong>Wants:</strong>--%>
-<%--<div id="tradeitems-wants" class="col-md-8"></div>--%>
-<%--</div>--%>
-<%--</div>--%>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-6"><strong>Offer:</strong></div>
-        <div class="col-md-6"><strong>Wants:</strong></div>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div id="tradeitems-offer" class="col-md-6"></div>
-        <div id="tradeitems-wants" class="col-md-6"></div>
-    </div>
-</div>
-
+<div class="all-trades"></div>
 
 <footer class="footer">
     <div class="container">

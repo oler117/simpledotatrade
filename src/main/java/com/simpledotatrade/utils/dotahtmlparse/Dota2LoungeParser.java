@@ -57,7 +57,8 @@ public class Dota2LoungeParser {
         init(pageOrTradeURL, isURL);
 
         Elements tradePollPart = doc.select(".tradepoll");
-        return getTradeOfferFromTradepollCssClass(tradePollPart);
+        TradeOffer tradeOffer = getTradeOfferFromTradepollCssClass(tradePollPart);
+        return tradeOffer;
     }
 
     public List<TradeOffer> parseTradeOfferPage(String pageOrTradePageURL, boolean isURL) {
@@ -80,22 +81,38 @@ public class Dota2LoungeParser {
 
         Elements tempElement;
 
-        tempElement = documentPart.select(".tradecnt .left .oitm");
-        for (Element item : tempElement) {
-
-            String name = item.select(".name b").text().trim();
-            tradeOffer.getOffering().add(new TradeItem(name));
+        if (tradeOffer.getId() == null) {
+            tradeOffer.setId(createTradeOfferId(documentPart));
         }
-
-
-        tempElement = documentPart.select(".tradecnt .right .oitm");
-        for (Element item : tempElement) {
-
-            String name = item.select(".name b").text().trim();
-            tradeOffer.getWants().add(new TradeItem(name));
-        }
+        createTradeOfferNames(documentPart, ".tradecnt .left .oitm", tradeOffer.getOffering());
+        createTradeOfferNames(documentPart, ".tradecnt .right .oitm", tradeOffer.getWants());
 
         return tradeOffer;
+    }
+
+    private static Long createTradeOfferId(Elements documentPart) {
+
+        Long id;
+
+        Elements tempElement = documentPart.select(".tradeheader a");
+        if (!tempElement.isEmpty()) {
+            id = Long.valueOf(tempElement.get(1).attr("href").split("=")[1]);
+        } else {
+            id = null;
+        }
+
+        return id;
+    }
+
+    private static void createTradeOfferNames(Elements documentPart, String cssQuery, List tradeOfferItems) {
+
+        Elements tempElement;
+        tempElement = documentPart.select(cssQuery);
+        for (Element item : tempElement) {
+
+            String name = item.select(".name b").text().trim();
+            tradeOfferItems.add(new TradeItem(name));
+        }
     }
 
 }

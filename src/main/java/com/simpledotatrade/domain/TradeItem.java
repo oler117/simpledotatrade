@@ -56,4 +56,28 @@ public class TradeItem {
                 ", mediumPrice=" + mediumPrice +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TradeItem)) return false;
+
+        TradeItem tradeItem = (TradeItem) o;
+
+        if (lowestPrice != null ? !lowestPrice.equals(tradeItem.lowestPrice) : tradeItem.lowestPrice != null)
+            return false;
+        if (mediumPrice != null ? !mediumPrice.equals(tradeItem.mediumPrice) : tradeItem.mediumPrice != null)
+            return false;
+        if (!name.equals(tradeItem.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (lowestPrice != null ? lowestPrice.hashCode() : 0);
+        result = 31 * result + (mediumPrice != null ? mediumPrice.hashCode() : 0);
+        return result;
+    }
 }
